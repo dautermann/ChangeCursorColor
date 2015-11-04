@@ -21,12 +21,6 @@ class CCTextField: NSTextField {
         myColorCursor = NSCursor.init(image: NSImage(named:"heart")!, hotSpot: NSMakePoint(0.0, 0.0))
     }
     
-    override func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
-
-        // Drawing code here.
-    }
-    
     override func resetCursorRects() {
         if let colorCursor = myColorCursor {
             self.addCursorRect(self.bounds, cursor: colorCursor)
@@ -66,14 +60,13 @@ class CCTextField: NSTextField {
         let rect = self.bounds
         let trackingArea = NSTrackingArea.init(rect: rect, options: [NSTrackingAreaOptions.MouseEnteredAndExited, NSTrackingAreaOptions.ActiveAlways], owner: self, userInfo: nil)
         
+        // keep track of where the mouse is within our text field
         self.setArea(trackingArea)
         
         if let ev = NSApp.currentEvent {
             if NSPointInRect(self.convertPoint(ev.locationInWindow, fromView: nil), self.bounds) {
                 self.mouseIn = true
-                
-                // This is a workaround for the private call that resets the IBeamCursor
-                myColorCursor?.performSelector("set")
+                myColorCursor?.set()
             }
         }
         return true
