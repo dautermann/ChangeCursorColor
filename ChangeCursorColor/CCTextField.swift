@@ -19,6 +19,8 @@ class CCTextField: NSTextField {
     override func awakeFromNib()
     {
         myColorCursor = NSCursor.init(image: NSImage(named:"heart")!, hotSpot: NSMakePoint(0.0, 0.0))
+        
+        customizeCaretColor()
     }
     
     override func resetCursorRects() {
@@ -30,6 +32,8 @@ class CCTextField: NSTextField {
     override func mouseEntered(theEvent: NSEvent) {
         super.mouseEntered(theEvent)
         self.mouseIn = true
+        
+        customizeCaretColor()
     }
 
     override func mouseExited(theEvent: NSEvent) {
@@ -55,6 +59,13 @@ class CCTextField: NSTextField {
         }
         trackingArea = areaToSet
     }
+
+    func customizeCaretColor() {
+        // change the insertion caret to another color
+        let fieldEditor = self.window?.fieldEditor(true, forObject: self) as! NSTextView
+
+        fieldEditor.insertionPointColor = NSColor.redColor()
+    }
     
     override func becomeFirstResponder() -> Bool {
         let rect = self.bounds
@@ -69,6 +80,7 @@ class CCTextField: NSTextField {
                 myColorCursor?.set()
             }
         }
+        
         return true
     }
 }
